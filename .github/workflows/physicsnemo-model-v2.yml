@@ -1,0 +1,22 @@
+name: F127 NVIDIA PhysicsNeMo Model V2
+on:
+  workflow_dispatch:
+  push:
+    paths: ['runtime/physicsnemo_model_v2.py','.github/workflows/physicsnemo-model-v2.yml']
+permissions:
+  contents: read
+jobs:
+  model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check nvidia-physicsnemo
+      - run: python runtime/physicsnemo_model_v2.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f127-physicsnemo-model-v2
+          path: artifacts/f127_physicsnemo_model_v2.json
