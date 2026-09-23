@@ -1,0 +1,22 @@
+name: F127 NVIDIA PhysicsNeMo Canary V1
+on:
+  workflow_dispatch:
+  push:
+    paths: ['runtime/physicsnemo_canary_v1.py','.github/workflows/physicsnemo-canary-v1.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check physicsnemo
+      - run: python runtime/physicsnemo_canary_v1.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f127-physicsnemo-canary-v1
+          path: artifacts/f127_physicsnemo_canary.json
