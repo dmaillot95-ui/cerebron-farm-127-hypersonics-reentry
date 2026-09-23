@@ -1,0 +1,23 @@
+name: F127 PhysicsNeMo Shock V4
+on:
+  workflow_dispatch:
+  push:
+    paths: ['runtime/physicsnemo_shock_v4.py','.github/workflows/physicsnemo-shock-v4.yml']
+permissions:
+  contents: read
+jobs:
+  shock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check nvidia-physicsnemo
+      - run: python runtime/physicsnemo_shock_v4.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f127-physicsnemo-shock-v4
+          path: artifacts/f127_physicsnemo_shock_v4.json
